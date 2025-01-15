@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -54,8 +55,14 @@ public class CustomFileUtil {
 
             Path savePath = Paths.get(uploadPath, savedName);
 
-        }
+            try {
+                Files.copy(file.getInputStream(), savePath);
+                uploadNames.add(savedName);
+            } catch (IOException e ) {
+                throw new RuntimeException(e);
+            }
 
+        } //end for
 
        return uploadNames;
     }
